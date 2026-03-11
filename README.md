@@ -57,11 +57,156 @@ You could use Git forever without GitHub. But GitHub without Git is nothing — 
 > Alternatives to GitHub: GitLab (popular in enterprises, has built-in CI/CD), Bitbucket (popular with Atlassian/Jira teams). All of them work with the same Git commands — only the website changes.
 ---
 
-|Prefix|Used For|
-|------|--------|
+## Your First Repository
+Today you go from reader to practitioner. By the end of this lesson you'll have a real Git repo with a real commit history, connected to GitHub.
+
+---
+## Part 1 — The .git Folder
+When you run git init inside a folder, Git creates a hidden .git folder. This folder is your repository. Everything — every commit, every branch, every piece of history — lives inside it.
+```
+my-project/
+├── .git/          ← The entire Git database. Don't touch this manually.
+│   ├── HEAD       ← Points to your current branch
+│   ├── config     ← Repo-specific settings
+│   ├── objects/   ← Every file/commit ever stored
+│   └── refs/      ← Branch and tag pointers
+├── index.html
+└── style.css
+```
+
+> If you delete the .git folder, Git forgets everything. Your files remain but all history is gone. This is why the .git folder is the most important folder in your project.
+On Termux, hidden folders (starting with .) don't show with ls. Use ls -la to see them.
+---
+
+## Part 2 — SSH Key Setup (Do This Once, Forever)
+
+Before touching code, let's connect Termux to GitHub securely. SSH keys let GitHub verify it's really you — no typing passwords on every push.
+- __How it works:__ SSH generates two keys — a private key (stays on your phone, never share it) and a public key (you give this to GitHub). When you push, they handshake and authenticate.
+Run these commands one by one in Termux:
+
+```
+# Step 1 — Generate your SSH key pair
+ssh-keygen -t ed25519 -C "your-github-email@example.com"
+# Press Enter 3 times (accept default location, no passphrase for now)
+
+# Step 2 — View your PUBLIC key (this is what you give GitHub)
+cat ~/.ssh/id_ed25519.pub
+# Copy the entire output — it starts with "ssh-ed25519"
+
+# Step 3 — Test the connection after adding to GitHub
+ssh -T git@github.com
+# You should see: "Hi AbbanMuhammad! You've successfully authenticated"
+```
+
+__Adding to GitHub:__
+1. Go to github.com → Settings → SSH and GPG keys
+2. Click "New SSH key"
+3. Paste what you copied from Step 2
+4. Title it something like "Termux - Android"
+
+> __On a PC:__ Exact same commands in Git Bash (Windows) or Terminal (Mac/Linux). The only difference is the key saves to C:\Users\YourName\.ssh\ on Windows instead of ~/.ssh/.
+
+## Part 3 — Your First Repository, Step by Step
+
+Now let's build something real. You'll create a project called git-practice — this will be your sandbox for the entire course.
+
+```
+# Navigate to your home folder in Termux
+cd ~
+
+# Create a new project folder
+mkdir git-practice
+cd git-practice
+
+# Initialize Git — this creates the .git folder
+git init
+
+# Verify the .git folder exists
+ls -la
+```
+You should see .git listed. Git is now watching this folder.
+```
+# Create your first file
+echo "# Git Practice Repo" > README.md
+echo "This is where I learn Git properly." >> README.md
+
+# Check what Git sees right now
+git status
+```
+You'll see something like this:
+```
+On branch main
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        README.md
+```
+__"Untracked"__ means Git sees the file exists but isn't tracking it yet. It's in your Working Directory only.
+```
+# Move README.md to the Staging Area
+git add README.md
+
+# Check status again — notice the difference
+git status
+```
+Now it says:
+```
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file: README.md
+```
+The file is now staged — ready to be committed.
+```
+# Create the commit — take the snapshot
+git commit -m "docs: add README
+```
+with project description"
+```
+# View your commit
+git log --oneline
+```
+You've just made your first commit. That snapshot now lives permanently in your .git folder.
+
+---
+## Part 4 — Pushing to GitHub
+```
+# On GitHub: create a NEW empty repository called "git-practice"
+# Don't add README or .gitignore — leave it completely empty
+
+# Back in Termux — connect your local repo to GitHub
+git remote add origin git@github.com:AbbanMuhammad/git-practice.git
+
+# Verify the connection
+git remote -v
+
+# Push your commit to GitHub
+git push -u origin main
+```
+The -u flag sets origin main as the default, so next time you just type git push.
+
+> What is origin? It's just a nickname for the remote URL. You could call it anything, but origin is the universal convention. Every developer on earth names their main remote origin.
+
+---
+
+The Workflow You'll Use Every Day
+```
+1. Edit files in Acode
+       ↓
+2. git status          (what changed?)
+       ↓
+3. git add <file>      (stage what's ready)
+       ↓
+4. git commit -m "..."  (snapshot it)
+       ↓
+5. git push            (sync to GitHub)
+```
+Memorise this loop. It's the heartbeat of every developer's day
+
+
+|Prefix | Used For|
+|:------ | :--------|
 |feat: |A new feature|
-|fix:  |A bug fix|
-|docs: |Documentation only|
+|fix:|A bug fix|
+|docs:|Documentation only|
 |style:|formatting, no logic change|
 |refactor:|Restructuring code, no new feature|
 |chore:|setup, config, tooling|
@@ -75,4 +220,3 @@ git commit -m "docs: update README with setup instructions"
 1. git commit -m "update"
 2. git commit -m "stuff"
 3. git commit -m "asd"
-
