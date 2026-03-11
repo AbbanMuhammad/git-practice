@@ -1,6 +1,7 @@
 # Git Practice Repo
-This is where I learn Git properly.
-# Standard — Conventional Commits
+
+# A Comprehensive Notes and Industry Standard/Good Practice
+## Standard — Conventional Commits
 The industry uses a format called Conventional Commits. Your message tells what type of change this is:
 
 |Prefix|Used For|
@@ -21,5 +22,4 @@ git commit -m "docs: update README with setup instructions"
 git commit -m "update"
 git commit -m "stuff"
 git commit -m "asd"
-
 
