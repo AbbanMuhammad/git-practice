@@ -2,7 +2,8 @@
 .env
 .env.local
 .env.production
-
+#API
+.env.API_KEY=supersecret123 —
 # Node.js
 node_modules/
 npm-debug.log
