@@ -1,3 +1,2 @@
 First line
 Second line
-This is the git revert 
