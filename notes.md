@@ -14,3 +14,5 @@
 ## Day 6 Git Commands:
 - git rmote -v
 - git remote add origin git@github.com:AbbanMuhammad/git-practice.git
+
+_This is just a line.
