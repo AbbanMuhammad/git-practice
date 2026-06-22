@@ -1,7 +1,5 @@
 ## Notes
 
-## Notes
-
 ## Git Commands I Learned
 - git init
 - git add
@@ -12,3 +10,7 @@
 - Never commit .env files
 
 - Edited locally on phone.
+
+## Day 6 Git Commands:
+- git rmote -v
+- git remote add origin git@github.com:AbbanMuhammad/git-practice.git
